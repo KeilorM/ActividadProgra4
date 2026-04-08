@@ -1,15 +1,13 @@
 import { useState } from 'react';
-
-// Componentes genéricos
 import EntidadForm from './components/EntidadForm';
 import EntidadList from './components/EntidadList';
+import Inicio from './components/Inicio';
 
-// APIs
 import { getUsuarios, createUsuario, updateUsuario, deleteUsuario } from './api/usuarios';
 import { getProductos, createProducto, updateProducto, deleteProducto } from './api/productos';
 import { getProveedores, createProveedor, updateProveedor, deleteProveedor } from './api/proveedores';
 import { getClientes, createCliente, updateCliente, deleteCliente } from './api/clientes';
-// ── Configuración de cada módulo ──────────────────────────────────────────────
+
 const MODULOS = {
   usuarios: {
     titulo: 'usuario',
@@ -35,7 +33,6 @@ const MODULOS = {
     campos: [
       { name: 'nombre', label: 'Nombre' },
       { name: 'precio', label: 'Precio', type: 'number' },
-      // Agrega más campos según tu modelo de producto
     ],
     columnas: [
       { key: 'nombre', label: 'Nombre' },
@@ -51,7 +48,6 @@ const MODULOS = {
     campos: [
       { name: 'nombre', label: 'Nombre' },
       { name: 'correo', label: 'Correo', type: 'email' },
-      // Agrega más campos según tu modelo de proveedor
     ],
     columnas: [
       { key: 'nombre', label: 'Nombre' },
@@ -59,29 +55,28 @@ const MODULOS = {
     ],
   },
   clientes: {
-  titulo: 'cliente',
-  getFn: getClientes,
-  createFn: createCliente,
-  updateFn: updateCliente,
-  deleteFn: deleteCliente,
-  campos: [
-    { name: 'nombre',   label: 'Nombre' },
-    { name: 'apellido', label: 'Apellido' },
-    { name: 'correo',   label: 'Correo', type: 'email' },
-    { name: 'telefono', label: 'Teléfono', type: 'tel' },
-    { name: 'direccion', label: 'Dirección' },
-  ],
-  columnas: [
-    { key: 'nombre',    label: 'Nombre' },
-    { key: 'apellido',  label: 'Apellido' },
-    { key: 'correo',    label: 'Correo' },
-    { key: 'telefono',  label: 'Teléfono' },
-    { key: 'direccion', label: 'Dirección' },
-  ],
-},
+    titulo: 'cliente',
+    getFn: getClientes,
+    createFn: createCliente,
+    updateFn: updateCliente,
+    deleteFn: deleteCliente,
+    campos: [
+      { name: 'nombre',    label: 'Nombre' },
+      { name: 'apellido',  label: 'Apellido' },
+      { name: 'correo',    label: 'Correo', type: 'email' },
+      { name: 'telefono',  label: 'Teléfono', type: 'tel' },
+      { name: 'direccion', label: 'Dirección' },
+    ],
+    columnas: [
+      { key: 'nombre',    label: 'Nombre' },
+      { key: 'apellido',  label: 'Apellido' },
+      { key: 'correo',    label: 'Correo' },
+      { key: 'telefono',  label: 'Teléfono' },
+      { key: 'direccion', label: 'Dirección' },
+    ],
+  },
 };
 
-// ── Componente de pestaña (Form + List juntos) ────────────────────────────────
 function ModuloTab({ modulo }) {
   const [seleccionado, setSeleccionado] = useState(null);
   const [recargar, setRecargar] = useState(0);
@@ -115,16 +110,15 @@ function ModuloTab({ modulo }) {
   );
 }
 
-// ── App principal ─────────────────────────────────────────────────────────────
-const PESTANAS = ['usuarios', 'productos', 'proveedores', 'clientes'];
+const PESTANAS = ['inicio', 'usuarios', 'productos', 'proveedores', 'clientes'];
+
 function App() {
-  const [pestana, setPestana] = useState('usuarios');
+  const [pestana, setPestana] = useState('inicio');
 
   return (
     <div style={{ padding: '1rem' }}>
       <h1>Gestión (React + Express)</h1>
 
-      {/* Navegación */}
       <nav style={{ marginBottom: '1rem' }}>
         {PESTANAS.map((p) => (
           <button
@@ -141,8 +135,10 @@ function App() {
         ))}
       </nav>
 
-      {/* Contenido de la pestaña activa */}
-      <ModuloTab key={pestana} modulo={pestana} />
+      {pestana === 'inicio'
+        ? <Inicio />
+        : <ModuloTab key={pestana} modulo={pestana} />
+      }
     </div>
   );
 }
